@@ -70,7 +70,7 @@ public class RESTService {
     @Produces(MediaType.APPLICATION_JSON)
     public List<Account> start() {
         System.out.println("start");
-        accountManager.schedule(null);
+        accountManager.schedule("ivan");
         return accountManager.getAll();
     	
     }

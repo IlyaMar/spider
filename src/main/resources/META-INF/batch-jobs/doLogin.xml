@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <job id="doLogin" xmlns="http://xmlns.jcp.org/xml/ns/javaee" version="1.0">
   <properties>
-    <property name="input_file" value="input1.txt"/>
-    <property name="output_file" value="output2.txt"/>
+    <property name="prop1" value="value1"/>
   </properties>
 
   <step id="login">

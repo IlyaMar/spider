@@ -58,7 +58,7 @@ public class AccountManager {
 	
 	
 	
-	@Schedule(second="*/10", minute="*", hour="0")
+	@Schedule(second="*/10", minute="*", hour="1")
 	public void doLogin() {
 		System.out.println("do scheduled login");
 		for (Account a : getAll()) {
