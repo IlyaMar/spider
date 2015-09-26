@@ -1,8 +1,8 @@
-require(["dojo/on", "dojo/dom", "dojo/dom-construct", "dojo/store/JsonRest", "dojo/store/Memory", "dojo/store/Cache", "dojo/store/Observable"],
+require(["dojo/on", "dojo/dom", "dojo/dom-construct", "dojo/store/JsonRest", "dojo/store/Memory", "dojo/store/Cache", "dojo/store/Observable", "dojox/grid/DataGrid"],
 
-function(on, dom, domConstruct, JsonRest, Memory, Cache, Observable) {
+function(on, dom, domConstruct, JsonRest, Memory, Cache, Observable, DataGrid) {
     masterStore = new JsonRest({
-        target: "rest/targets/"
+        target: "rest/accounts/"
     });
     masterStore = new Observable(masterStore);
     cacheStore = new Memory({});
@@ -49,6 +49,17 @@ function(on, dom, domConstruct, JsonRest, Memory, Cache, Observable) {
             domConstruct.destroy(rows.splice(i, 1)[0]);
         }
     }
+    
+    grid = new DataGrid({
+        store: inventoryStore,
+        query: { id: "*" },
+        queryOptions: {},
+        structure: [
+            { name: "Login", field: "login", width: "25%" },
+            { name: "Password", field: "password", width: "25%" }
+        ]
+    }, "grid");
+    grid.startup();
     
 }
 

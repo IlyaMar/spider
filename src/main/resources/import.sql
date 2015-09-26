@@ -16,5 +16,9 @@
 --
 
 -- You can use this file to load seed data into the database using SQL statements
-insert into Account (login, password) values ('ivan', 'fefhr7898') 
-insert into Account (login, password) values ('nataila', 'h34tyjjr#') 
+-- insert into LoginInfo (id, last_result, last_date, next_date) values (1, True, '2015-09-25 20:16:46.969', now())
+-- insert into LoginInfo (id, last_result, last_date, next_date) values (2, False, null, now())
+
+-- insert into Account (login, password, loginInfo_id) values ('ivan', 'fefhr7898', 1) 
+-- insert into Account (login, password, loginInfo_id) values ('nataila', 'h34tyjjr#', 2) 
+

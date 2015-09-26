@@ -2,12 +2,17 @@ package org.imartynov.spider.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Account {
 	@Id
 	private String login;
 	private String password;
+
+	
+	@OneToOne
+	LoginInfo loginInfo;
 
 	public Account() {
 		
@@ -32,6 +37,14 @@ public class Account {
 	@Override
 	public String toString() {
 		return "Account [login=" + login + "]";
+	}
+
+	public LoginInfo getLoginInfo() {
+		return loginInfo;
+	}
+
+	public void setLoginInfo(LoginInfo loginInfo) {
+		this.loginInfo = loginInfo;
 	}
 	
 }

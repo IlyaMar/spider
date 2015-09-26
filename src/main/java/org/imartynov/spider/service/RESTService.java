@@ -45,23 +45,19 @@ public class RESTService {
     }
     
     @GET
-    @Path("/targets")
+    @Path("/accounts")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Account> getTargets() {
-        System.out.println("get targets");
-        /*return Json.createArrayBuilder()
-                .add(buildT("aaa"))
-                .add(buildT("bbb"))
-                .build();*/
+        System.out.println("get accounts");
         return accountManager.getAll();
     	
     }
 
     @POST
-    @Path("/targets")
+    @Path("/accounts")
     @Consumes("application/json")
-    public void addTarget(Account a) {
-        System.out.println("add target");
+    public void addAccount(Account a) {
+        System.out.println("add account");
         accountManager.add(a);
     }
 

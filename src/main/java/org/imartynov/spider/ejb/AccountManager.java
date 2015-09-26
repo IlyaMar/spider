@@ -1,12 +1,12 @@
 package org.imartynov.spider.ejb;
 
-import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 import javax.batch.operations.JobOperator;
 import javax.batch.runtime.BatchRuntime;
+import javax.ejb.DependsOn;
 import javax.ejb.Schedule;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -14,8 +14,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import org.imartynov.spider.domain.Account;
+import org.imartynov.spider.domain.LoginInfo;
 
 @Stateless
+@DependsOn("StartupBean")
 public class AccountManager {
 
     @Inject
@@ -27,6 +29,10 @@ public class AccountManager {
 	
 	public void add(final Account a) {
         System.out.println("Registering " + a);
+        LoginInfo li = new LoginInfo();
+        li.setNext_date(new Date());
+        em.persist(li);		
+        a.setLoginInfo(li);        
         em.persist(a);		
 	}
 
@@ -58,7 +64,7 @@ public class AccountManager {
 	
 	
 	
-	@Schedule(second="*/10", minute="*", hour="1")
+	@Schedule(second="*/10", minute="*", hour="2")
 	public void doLogin() {
 		System.out.println("do scheduled login");
 		for (Account a : getAll()) {
