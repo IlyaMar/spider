@@ -31,11 +31,11 @@ public class LoginBatchlet implements Batchlet {
     	String login = jobParams.getProperty("login");
         System.out.println("LoginBatchlet process, login " + login);
         
-        Account a = accountManager.get(login);
-        LoginProcessor lp = new LoginProcessor(a);
+        //Account a = accountManager.get(login);
+        /*LoginProcessor lp = new LoginProcessor(a);
         if (lp.run())
         	return "COMPLETED";
-        else
+        else*/
         	return "FAILED";
     }
 

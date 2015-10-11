@@ -33,7 +33,19 @@ public class StartupBean {
 	        a.setLoginInfo(li);        
 	        em.persist(a);
 		}
-        
+
+		{
+	        LoginInfo li = new LoginInfo();
+	        li.setNext_date(new Date());
+	        em.persist(li);
+	        Account a = new Account();
+	        a.setLogin("ivan");
+	        a.setPassword("UNOwef235_");        
+	        a.setLoginInfo(li);        
+	        em.persist(a);
+		}
+
+		
         {
         	Calendar c = Calendar.getInstance(); 
         	c.setTime(new Date()); 

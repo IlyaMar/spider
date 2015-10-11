@@ -16,6 +16,7 @@
  */
 package org.imartynov.spider.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -47,10 +48,14 @@ public class RESTService {
     @GET
     @Path("/accounts")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Account> getTargets() {
+    public List<AccountDTO> getTargets() {
         System.out.println("get accounts");
-        return accountManager.getAll();
-    	
+        List<AccountDTO> l = new ArrayList<>();
+        for (Account a : accountManager.getAll()) {
+        	l.add(new AccountDTO(a));
+        }
+        
+        return l;    	
     }
 
     @POST
@@ -66,7 +71,7 @@ public class RESTService {
     @Produces(MediaType.APPLICATION_JSON)
     public List<Account> start() {
         System.out.println("start");
-        accountManager.schedule("ivan");
+        //accountManager.schedule("ivan");
         return accountManager.getAll();
     	
     }

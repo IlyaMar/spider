@@ -1,65 +1,48 @@
-require(["dojo/on", "dojo/dom", "dojo/dom-construct", "dojo/store/JsonRest", "dojo/store/Memory", "dojo/store/Cache", "dojo/store/Observable", "dojox/grid/DataGrid"],
+require(["dojo/_base/declare", "dojo/on", "dojo/dom", "dojo/dom-construct", "dstore/Rest", "dojo/store/Memory", "dstore/Cache", "dojo/store/Observable", "dgrid/OnDemandGrid", "dgrid/Keyboard", "dgrid/Selection", "dojo/domReady!"],
 
-function(on, dom, domConstruct, JsonRest, Memory, Cache, Observable, DataGrid) {
-    masterStore = new JsonRest({
+function(declare, on, dom, domConstruct, Rest, Memory, Cache, Observable, OnDemandGrid, Keyboard, Selection) {
+    masterStore = new Rest({
         target: "rest/accounts/"
     });
-    masterStore = new Observable(masterStore);
-    cacheStore = new Memory({});
-    inventoryStore = new Cache(masterStore, cacheStore);
-	
-    results = masterStore.query();
-    viewResults(results);
-    
+    //masterStore = new Observable(masterStore);	
+    /*var cachedStore = Cache.create(masterStore, {
+        cachingStore: new Memory()
+    });*/
     
     on(dom.byId("add"), "click", function(){
 		console.log('add click');
     	masterStore.add({
-            login: "egor",
-            password: '238_YINwe'
+            login: dom.byId("newLogin").value,
+            password: dom.byId("newPassword").value
         });
     });
     
-    function viewResults(results) {
-        var container = dom.byId("container");
-        var rows = [];
-
-        results.forEach(insertRow);
-
-        results.observe(function(item, removedIndex, insertedIndex){
-    		console.log('observe ' + item);
-            // this will be called any time a item is added, removed, and updated
-            if(removedIndex > -1){
-                removeRow(removedIndex);
-            }
-            if(insertedIndex > -1){
-                insertRow(item, insertedIndex);
-            }
-        }, true); // we can indicate to be notified of object updates as well
-
-        function insertRow(item, i){
-    		console.log('insertRow ' + item);
-            var row = domConstruct.create("div", {
-                innerHTML: item.login + " password: " + item.password
-            });
-            rows.splice(i, 0, container.insertBefore(row, rows[i] || null));
-        }
-
-        function removeRow(i){
-            domConstruct.destroy(rows.splice(i, 1)[0]);
-        }
-    }
     
-    grid = new DataGrid({
-        store: inventoryStore,
-        query: { id: "*" },
-        queryOptions: {},
-        structure: [
-            { name: "Login", field: "login", width: "25%" },
-            { name: "Password", field: "password", width: "25%" }
-        ]
-    }, "grid");
-    grid.startup();
+    var CustomGrid = declare([ OnDemandGrid, Keyboard, Selection ]);
+    
+    grid = new CustomGrid({
+        collection: masterStore,
+        columns: [
+            { label: 'Login', field: 'login', sortable: true },
+            { label: 'Password', field: 'password' },
+            { label: 'Last result', field: 'last_result', sortable: true },
+            { label: 'Last date', field: 'last_date'},
+            { label: 'Next date', field: 'next_date'}
+        ],
+        // for Selection; only select a single row at a time
+        selectionMode: 'single',
+        // for Keyboard; allow only row-level keyboard navigation
+        cellNavigation: false
+    }, 'grid');
+    
+    
+	on(dom.byId("remove"), 'click', function () {
+		for (var i in grid.selection) {
+			console.log('removing ' + i);
+			masterStore.remove(i);
+		}
+	});
+
     
 }
 

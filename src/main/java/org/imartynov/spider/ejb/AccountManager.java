@@ -36,8 +36,8 @@ public class AccountManager {
         em.persist(a);		
 	}
 
-	public void delete(final String login) {
-		Account a = get(login);
+	public void delete(final Long id) {
+		Account a = get(id);
 		em.remove(a);
 	}
 
@@ -47,12 +47,12 @@ public class AccountManager {
         return (List<Account>) query.getResultList();
 	}
 
-	public Account get(final String login) {
-        return em.find(Account.class, login);
+	public Account get(final Long id) {
+        return em.find(Account.class, id);
 	}
 	
-	public void schedule(final String login) {
-		Account a = get(login);
+	public void schedule(final Long id) {
+		Account a = get(id);
 		JobOperator jobOperator = BatchRuntime.getJobOperator();
 		Properties props = new Properties();
 		props.setProperty("login", a.getLogin());
@@ -64,11 +64,11 @@ public class AccountManager {
 	
 	
 	
-	@Schedule(second="*/10", minute="*", hour="2")
+	//@Schedule(second="*/10", minute="*", hour="2")
 	public void doLogin() {
 		System.out.println("do scheduled login");
 		for (Account a : getAll()) {
-			schedule(a.getLogin());
+			schedule(a.getId());
 		}		
 	}
 }

@@ -9,23 +9,24 @@
 <body>
 <h1 id="greeting">Accounts</h1>
 <div id="container"></div>
-<button id="add">Add Account</button>
+<form>
+	<input id="newLogin">
+	<input id="newPassword">
+	<button id="add" type="submit">Add</button>
+</form>
+
 
 <br/>
 <div id="grid"></div>
 
-<script src="//ajax.googleapis.com/ajax/libs/dojo/1.10.4/dojo/dojo.js" data-dojo-config="async: true"></script>
+<br/>
+<button id="remove" type="submit">Remove</button>
+
+
+<script src="bower_components/dojo/dojo.js" data-dojo-config="async: true"></script>
 <script src="app.js"></script>
 
 
-HTML5 + REST Hello World<br>
-<!-- form name="theForm">
-    <fieldset>
-        <label for="name" id="name_label">Name</label>
-        <input name="name" id="name" type="text" required placeholder="Your Name"/>
-        <input type="submit" id="sayHello" value="Say Hello"/><span id="result"></span>
-    </fieldset>
-</form-->
 
 </body>
 </html>

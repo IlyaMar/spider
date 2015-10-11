@@ -1,12 +1,16 @@
 package org.imartynov.spider.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
 @Entity
 public class Account {
 	@Id
+	@GeneratedValue
+	private Long id;
+	
 	private String login;
 	private String password;
 
@@ -18,6 +22,10 @@ public class Account {
 		
 	}
 
+	public Long getId() {
+		return id;
+	}
+	
 	public String getLogin() {
 		return login;
 	}
