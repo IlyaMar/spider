@@ -1,10 +1,12 @@
 package org.imartynov.spider.service;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.imartynov.spider.domain.Account;
 
 public class AccountDTO {
+	private static SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 	
 	public Long getId() {
 		return id;
@@ -38,16 +40,20 @@ public class AccountDTO {
 		this.last_result = last_result;
 	}
 
-	public Date getLast_date() {
-		return last_date;
+	public String getLast_date() {
+		if (last_date == null)
+			return null;
+		return dt.format(last_date);
 	}
 
 	public void setLast_date(Date last_date) {
 		this.last_date = last_date;
 	}
 
-	public Date getNext_date() {
-		return next_date;
+	public String getNext_date() {
+		if (next_date == null)
+			return null;
+		return dt.format(next_date);
 	}
 
 	public void setNext_date(Date next_date) {
@@ -75,7 +81,7 @@ public class AccountDTO {
 		this.password = a.getPassword();
 		this.last_result = a.getLoginInfo().getLast_result();
 		this.last_date = a.getLoginInfo().getLast_date();
-		this.next_date = a.getLoginInfo().getLast_date();
+		this.next_date = a.getLoginInfo().getNext_date();
 	}
 
 }

@@ -1,8 +1,10 @@
 package org.imartynov.spider.ejb;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.Random;
 
 import javax.batch.operations.JobOperator;
 import javax.batch.runtime.BatchRuntime;
@@ -19,10 +21,12 @@ import org.imartynov.spider.domain.LoginInfo;
 @Stateless
 @DependsOn("StartupBean")
 public class AccountManager {
-
+	private final int LOGIN_HOUR_MIN = 10;
+	private final int LOGIN_HOUR_MAX = 11;
+		
     @Inject
     private EntityManager em;
-
+    
 	
 	public AccountManager() {
 	}
@@ -51,10 +55,46 @@ public class AccountManager {
         return em.find(Account.class, id);
 	}
 	
+	public void runCallback(final Long id, final boolean result) {
+		Account a = get(id);		
+		LoginInfo li = a.getLoginInfo();
+		li.setLast_result(result);
+		li.setLast_date(new Date());
+		Date nextTime = getNextDate(a);
+		li.setNext_date(nextTime);		
+		em.persist(li);
+		System.out.println("result: " + result + ", next run set to " + nextTime + " for login " + a.getLogin());
+	}
+	
+	private int getLoginHour() {
+		Random rand = new Random();
+	    int randomNum = rand.nextInt((LOGIN_HOUR_MAX - LOGIN_HOUR_MIN) + 1) + LOGIN_HOUR_MIN;
+	    return randomNum;		
+	}
+	
+	private int getLoginMinSec() {
+		Random rand = new Random();
+	    int randomNum = rand.nextInt((59 - 0) + 1) + 0;
+	    return randomNum;		
+	}
+	
+	
+	private Date getNextDate(Account a) {
+		LoginInfo li = a.getLoginInfo();
+		Date last = li.getLast_date();		
+		Calendar c = new Calendar.Builder().setInstant(last).build();
+	    c.add(Calendar.HOUR_OF_DAY, getLoginHour());
+	    c.set(Calendar.MINUTE, getLoginMinSec());
+	    c.set(Calendar.SECOND, getLoginMinSec());
+		return c.getTime();
+	}
+	
+	
 	public void schedule(final Long id) {
 		Account a = get(id);
 		JobOperator jobOperator = BatchRuntime.getJobOperator();
 		Properties props = new Properties();
+		props.setProperty("id", id.toString());
 		props.setProperty("login", a.getLogin());
 		props.setProperty("password", a.getPassword());
 		
@@ -64,11 +104,13 @@ public class AccountManager {
 	
 	
 	
-	//@Schedule(second="*/10", minute="*", hour="2")
-	public void doLogin() {
-		System.out.println("do scheduled login");
+	//@Schedule(second="*/7", minute="*", hour="*")
+	public void doScheduled() {
+		System.out.println("doScheduled");
+		Date now = new Date();		
 		for (Account a : getAll()) {
-			schedule(a.getId());
+			if (now.after(a.getLoginInfo().getNext_date()))			
+				schedule(a.getId());
 		}		
 	}
 }

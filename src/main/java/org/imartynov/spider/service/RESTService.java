@@ -24,9 +24,11 @@ import javax.ejb.Stateless;
 import javax.json.Json;
 import javax.json.JsonObjectBuilder;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -62,10 +64,18 @@ public class RESTService {
     @Path("/accounts")
     @Consumes("application/json")
     public void addAccount(Account a) {
-        System.out.println("add account");
+        System.out.println("add account " + a.getLogin());
         accountManager.add(a);
     }
 
+    @DELETE
+    @Path("/accounts/{id}")
+    public void addAccount(@PathParam("id") Long id) {
+        System.out.println("delete account " + id);
+        accountManager.delete(id);
+    }
+
+    
     @GET
     @Path("/start")
     @Produces(MediaType.APPLICATION_JSON)

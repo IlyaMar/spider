@@ -23,6 +23,7 @@ public class StartupBean {
 	@PostConstruct
 	void init() {
 		System.out.println("StartupBean init");
+		
 		{
 	        LoginInfo li = new LoginInfo();
 	        li.setNext_date(new Date());
@@ -34,7 +35,7 @@ public class StartupBean {
 	        em.persist(a);
 		}
 
-		{
+		/*{
 	        LoginInfo li = new LoginInfo();
 	        li.setNext_date(new Date());
 	        em.persist(li);
@@ -62,7 +63,7 @@ public class StartupBean {
 	        a.setPassword("&dsf07IY");        
 	        a.setLoginInfo(li);        
 	        em.persist(a);
-        }
+        }*/
 
 	}
 	

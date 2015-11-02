@@ -162,6 +162,13 @@
                 <groupId>org.wildfly.plugins</groupId>
                 <artifactId>wildfly-maven-plugin</artifactId>
                 <version>${version.wildfly.maven.plugin}</version>
+				
+				<!--configuration>
+					<hostname>localhost</hostname>
+					<username>ilya</username>
+					<port>9995</port>
+					<password>1q2w3e$R</password>
+				</configuration-->
             </plugin>
             <!-- Compiler plugin enforces Java 1.6 compatibility and activates annotation processors. -->
             <plugin>

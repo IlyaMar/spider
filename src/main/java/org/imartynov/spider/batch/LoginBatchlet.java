@@ -28,15 +28,23 @@ public class LoginBatchlet implements Batchlet {
     @Override
     public String process() throws Exception {
     	Properties jobParams = BatchRuntime.getJobOperator().getParameters(jobCtx.getExecutionId());    	
-    	String login = jobParams.getProperty("login");
-        System.out.println("LoginBatchlet process, login " + login);
-        
-        //Account a = accountManager.get(login);
-        /*LoginProcessor lp = new LoginProcessor(a);
-        if (lp.run())
-        	return "COMPLETED";
-        else*/
-        	return "FAILED";
+    	Long id = Long.parseLong(jobParams.getProperty("id"));
+        Account a = accountManager.get(id);
+        System.out.println("LoginBatchlet process, login " + a.getLogin());
+        LoginProcessor lp = new LoginProcessor(a);
+        boolean result = true;
+        String jobResult = "COMPLETED";
+        if (lp.run()) {
+        	result = true;
+        	jobResult = "COMPLETED";
+        }
+        else {
+        	result = false;
+        	jobResult = "FAILED";
+        }
+
+    	accountManager.runCallback(id, result);
+    	return jobResult;
     }
 
 	@Override
