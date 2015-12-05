@@ -14,10 +14,12 @@ public class LoginInfo {
 		
 	Boolean last_result;
 	Date last_date;
+	Boolean in_process;
 	Date next_date;
 	
 	public LoginInfo() {
 		last_result = false;
+		in_process = false;
 	}
 
 	public Boolean getLast_result() {
@@ -42,6 +44,14 @@ public class LoginInfo {
 
 	public void setNext_date(Date next_date) {
 		this.next_date = next_date;
+	}
+
+	public Boolean getIn_process() {
+		return in_process;
+	}
+
+	public void setIn_process(Boolean in_process) {
+		this.in_process = in_process;
 	}
 
 	

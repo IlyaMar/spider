@@ -6,7 +6,7 @@ import java.util.Date;
 import org.imartynov.spider.domain.Account;
 
 public class AccountDTO {
-	private static SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+	private static SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
 	public Long getId() {
 		return id;

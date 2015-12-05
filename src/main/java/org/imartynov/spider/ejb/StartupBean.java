@@ -1,16 +1,13 @@
 package org.imartynov.spider.ejb;
 
-import java.util.Calendar;
-import java.util.Date;
-
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import org.imartynov.spider.domain.Account;
-import org.imartynov.spider.domain.LoginInfo;
 
 @Startup
 @Singleton
@@ -18,24 +15,34 @@ public class StartupBean {
 	
     @Inject
     private EntityManager em;
-
+    
+    @EJB
+    private AccountManager am;
 	
 	@PostConstruct
 	void init() {
 		System.out.println("StartupBean init");
+		System.out.println("am is " + am);
+		System.out.println("em is " + em);
+		for (Account a : am.getAll()) {
+			System.out.println("StartupBean process: " + a.getLogin());
+			a.getLoginInfo().setIn_process(false);
+			em.persist(a.getLoginInfo());
+		}
+		System.out.println("StartupBean finish");
 		
-		{
+		/*{
 	        LoginInfo li = new LoginInfo();
 	        li.setNext_date(new Date());
 	        em.persist(li);
 	        Account a = new Account();
 	        a.setLogin("sergey");
 	        a.setPassword("234jitewt$");        
-	        a.setLoginInfo(li);        
+	        a.setLoginInfo(li);
 	        em.persist(a);
 		}
 
-		/*{
+		{
 	        LoginInfo li = new LoginInfo();
 	        li.setNext_date(new Date());
 	        em.persist(li);
