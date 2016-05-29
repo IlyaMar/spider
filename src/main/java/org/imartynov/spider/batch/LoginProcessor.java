@@ -24,70 +24,11 @@ public class LoginProcessor {
 	}
 	
 	void init() {
-		/*cookieStore = new BasicCookieStore();
-		client = HttpClientBuilder.create().setDefaultCookieStore(cookieStore).build();
-		localContext = new BasicHttpContext();
-		localContext.setAttribute(HttpClientContext.COOKIE_STORE, cookieStore);*/
 	}
-	
-	
-	/*void loadForm() throws Exception {
-		HttpGet request = new HttpGet(loginUrl);
-
-		request.addHeader("User-Agent", USER_AGENT);
-		System.out.println("GET on login form ...");
-		HttpResponse response = client.execute(request, localContext);
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-
-		BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-	}
-	
-	
-	void sendPost() throws Exception {
-		HttpUriRequest post = RequestBuilder.post()
-                .setUri(new URI(loginUrl))
-                .addParameter("loginText", account.getLogin())
-                .addParameter("passwordText", account.getPassword())
-                .build();
-		
-		// add header
-		post.setHeader("User-Agent", USER_AGENT);
-
-		System.out.println("POST on login form ...");
-		CloseableHttpResponse r = client.execute(post, localContext);
-        try {
-            HttpEntity entity = r.getEntity();
-
-            System.out.println("Login form get: " + r.getStatusLine());
-            EntityUtils.consume(entity);
-
-            System.out.println("Post logon cookies:");
-            List<Cookie> cookies = cookieStore.getCookies();
-            if (cookies.isEmpty()) {
-                System.out.println("None");
-            } else {
-                for (int i = 0; i < cookies.size(); i++) {
-                    System.out.println("- " + cookies.get(i).toString());
-                }
-            }
-        } finally {
-            r.close();
-        }		
-	}
-
-	void logout () throws Exception {
-		HttpGet request = new HttpGet(loginUrl);
-
-		request.addHeader("User-Agent", USER_AGENT);
-		System.out.println("GET on login form ...");
-		HttpResponse response = client.execute(request, localContext);
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-
-		BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-	}*/
 	
 	public boolean run() throws Exception {
-	    try (final WebClient webClient = new WebClient(BrowserVersion.CHROME)) {		    	
+	    boolean result = false;
+		try (final WebClient webClient = new WebClient(BrowserVersion.CHROME)) {		    	
 	    	webClient.getOptions().setRedirectEnabled(true);
 	    	webClient.getCookieManager().setCookiesEnabled(true);
 	    	webClient.getOptions().setJavaScriptEnabled(true);
@@ -116,8 +57,13 @@ public class LoginProcessor {
 	        button.click();
 	        Cookie authCookie = webClient.getCookieManager().getCookie("ASP.NET_SessionId");
 	        System.out.println("got cookie: " + authCookie);
-	        return authCookie != null;
+	        result = authCookie != null;
 	    }
+		catch (Exception e) {
+			System.out.println("Exception during form login:");
+			e.printStackTrace(System.out);
+		}
+		return result;
 	}
 	
 	
