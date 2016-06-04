@@ -47,7 +47,7 @@
         <!-- Define the version of the JBoss BOMs we want to import to specify tested stacks. -->
         <version.jboss.bom>9.0.0.Final</version.jboss.bom>
     </properties>
-
+	
     <dependencyManagement>
         <dependencies>
             <!-- JBoss distributes a complete set of Java EE 7 APIs including
